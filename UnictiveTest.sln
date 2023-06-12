@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestAPI", "RestAPI\RestAPI.csproj", "{5C79FADA-BB1C-4830-AA9F-2B824CC3FE77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestLogic", "TestLogic\TestLogic.csproj", "{744C2387-B8FB-474E-B722-AB15F8154DCF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5C79FADA-BB1C-4830-AA9F-2B824CC3FE77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C79FADA-BB1C-4830-AA9F-2B824CC3FE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C79FADA-BB1C-4830-AA9F-2B824CC3FE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C79FADA-BB1C-4830-AA9F-2B824CC3FE77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{744C2387-B8FB-474E-B722-AB15F8154DCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{744C2387-B8FB-474E-B722-AB15F8154DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{744C2387-B8FB-474E-B722-AB15F8154DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{744C2387-B8FB-474E-B722-AB15F8154DCF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8824B07B-7D67-4AF6-935A-68E41CF9441E}
+	EndGlobalSection
+EndGlobal
