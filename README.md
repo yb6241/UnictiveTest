@@ -75,7 +75,7 @@ Adapun langkah-langkah dalam menggunakan REST API ini adalah sebagai berikut :
         * Carilah tempat anda menaruhnya (default ada di folder Project RestAPI dengan nama db_unictive.bak)
         * Kemudian klik OK
         * Selesai
-5. Menjalankan REST API ini adalah sebagai berikut :
+5. Menjalankan Project RestAPI :
     * Untuk merubah koneksi database dengan penyesuaian pada settingan MySQL anda, dapat dikonfigurasi pada file `appsettings.json`
         ```json
         "ConnectionStrings": {
@@ -104,6 +104,12 @@ Adapun langkah-langkah dalam menggunakan REST API ini adalah sebagai berikut :
     * Jika ingin membuat email dan password yang baru, silahkan register secara manual pada table UserInfo
     * Jika semua sudah selesai klik tombol Send pada Postman
     * Enjoy it !
+6. Menjalankan Project TestLogic :
+    * Buka Solutions Explorer
+    * Klik kanan pada Project TestLogic
+    * Pilih Set as Startup Project
+    * Hit tombol `F5`
+    * Jika berhasil akan muncul Command Prompt
 
 # Cara Berkontribusi
 Untuk bisa berkontribusi dalam mengembangkan aplikasi ini, silahkan kontak developer terlebih dahulu.
