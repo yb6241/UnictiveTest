@@ -11,9 +11,11 @@ namespace RestAPI.Models
         public string? Nama { get; set; }
 
         [Required]
+        [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
 
         [Required]
+        [DataType(DataType.PhoneNumber)]
         public string? Phone { get; set; }
 
         public List<MemberHobby> Hobby { get; set; } = new List<MemberHobby>();

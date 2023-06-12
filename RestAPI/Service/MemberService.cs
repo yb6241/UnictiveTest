@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Dapper;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using System.Data;
+using System.Diagnostics.Metrics;
+using System.Collections.Generic;
 
 namespace RestAPI.Service
 {
@@ -65,53 +67,17 @@ namespace RestAPI.Service
             }
         }
 
-        public async Task<Member> AddMember(Member member)
+        public async Task AddMember(Member member)
         {
             var procedureName = "Usp_AddNewMember";
             var parameters = new DynamicParameters();
             parameters.Add("Nama", member.Nama, DbType.String);
             parameters.Add("Email", member.Email, DbType.String);
             parameters.Add("Phone", member.Phone, DbType.String);
+
             using (var connection = _dbContext.CreateConnection())
             {
-                var Id = await connection.QuerySingleAsync<int>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                var hobby = AddHobby(member.Hobby);
-             
-                var addMember = new Member
-                {
-                    Id = Id,
-                    Nama = member.Nama,
-                    Email = member.Email,
-                    Phone = member.Phone,
-                    Hobby = member.Hobby
-                };
-
-                return addMember;
-            }
-        }
-
-        public async Task<Member> AddHobby(Member member)
-        {
-            var procedureName = "Usp_AddNewMember";
-            var parameters = new DynamicParameters();
-            parameters.Add("Nama", member.Nama, DbType.String);
-            parameters.Add("Email", member.Email, DbType.String);
-            parameters.Add("Phone", member.Phone, DbType.String);
-            using (var connection = _dbContext.CreateConnection())
-            {
-                var Id = await connection.QuerySingleAsync<int>(procedureName, parameters, commandType: CommandType.StoredProcedure);
-                var hobby = AddHobby(member.Hobby);
-
-                var addMember = new Member
-                {
-                    Id = Id,
-                    Nama = member.Nama,
-                    Email = member.Email,
-                    Phone = member.Phone,
-                    Hobby = member.Hobby
-                };
-
-                return addMember;
+                var Id = await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -123,6 +89,7 @@ namespace RestAPI.Service
             parameters.Add("Nama", member.Nama, DbType.String);
             parameters.Add("Email", member.Email, DbType.String);
             parameters.Add("Phone", member.Phone, DbType.String);
+
             using (var connection = _dbContext.CreateConnection())
             {
                 await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
@@ -130,12 +97,60 @@ namespace RestAPI.Service
         }
         public async Task DeleteMember(int Id)
         {
-            var procedureName = "Usp_UpdateMember";
+            var procedureName = "Usp_DeleteMemberByID";
             var parameters = new DynamicParameters();
             parameters.Add("Id", Id, DbType.Int32);
+
             using (var connection = _dbContext.CreateConnection())
             {
                 await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        //Hobbies
+        public async Task AddNewHobby(List<MemberHobby> hobby)
+        {
+            var procedureName = "Usp_AddNewHobby";
+            foreach(MemberHobby _hobby in hobby)
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("JenisHobby", _hobby.JenisHobby, DbType.String);
+                parameters.Add("MemberId", _hobby.MemberId, DbType.String);
+
+                using (var connection = _dbContext.CreateConnection())
+                {
+                    var Id = await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                }
+            }
+        }
+        public async Task UpdateHobby(List<MemberHobby> hobby)
+        {
+            var procedureName = "Usp_UpdateMemberHobby";
+            foreach (MemberHobby _hobby in hobby)
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("Id", _hobby.Id, DbType.Int32);
+                parameters.Add("JenisHobby", _hobby.JenisHobby, DbType.String);
+
+                using (var connection = _dbContext.CreateConnection())
+                {
+                    await connection.ExecuteAsync(procedureName, parameters, commandType: CommandType.StoredProcedure);
+                }
+            }
+        }
+
+        public async Task<Member> GetMemberByEmail(string Email)
+        {
+            var procedureName = "Usp_GetMemberByEmail";
+            var parameters = new DynamicParameters();
+            parameters.Add("Email", Email, DbType.String, ParameterDirection.Input);
+
+            using (var connection = _dbContext.CreateConnection())
+            {
+                var members = await connection.QueryFirstOrDefaultAsync<Member>
+                    (procedureName, parameters, commandType: CommandType.StoredProcedure);
+
+                return members;
             }
         }
     }

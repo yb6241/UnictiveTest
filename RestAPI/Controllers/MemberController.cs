@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using RestAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MemberController : ControllerBase
@@ -56,9 +58,19 @@ namespace RestAPI.Controllers
         {
             try
             {
-                var createdMember = await memberService.AddMember(member);
+                //cek email
+                var cekEmail = await memberService.GetMemberByEmail(member.Email);
+                if(cekEmail != null && cekEmail.Email.Count() > 1)
+                {
+                    return BadRequest("Email '" + member.Email + "' sudah terdaftar.");
+                }
+                else
+                {
+                    await memberService.AddMember(member);
+                    await memberService.AddNewHobby(member.Hobby);
 
-                return CreatedAtRoute("getmemberbyid", new { id = createdMember.Id }, createdMember);
+                    return CreatedAtRoute("getmemberbyid", new { id = member.Id }, member);
+                }
             }
             catch (Exception ex)
             {
@@ -76,7 +88,8 @@ namespace RestAPI.Controllers
                 if (dbMember == null)
                     return NotFound();
                 await memberService.UpdateMember(Id, member);
-                return NoContent();
+                await memberService.UpdateHobby(member.Hobby);
+                return CreatedAtRoute("getmemberbyid", new { id = Id }, member);
             }
             catch (Exception ex)
             {
@@ -93,7 +106,7 @@ namespace RestAPI.Controllers
                 if (dbMember == null)
                     return NotFound();
                 await memberService.DeleteMember(Id);
-                return NoContent();
+                return StatusCode(200, true);
             }
             catch (Exception ex)
             {
